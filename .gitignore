@@ -46,4 +46,6 @@ db/citadel-seed/*
 services/installed.json
 services/installed.yml
 
+c-lightning/*
+!c-lightning/.gitkeep
 events/karen

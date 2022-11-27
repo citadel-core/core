@@ -10,3 +10,4 @@ nginx/*
 services/installed.yml
 apps/*
 i2p/*
+c-lightning/*

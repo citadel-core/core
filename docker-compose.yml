@@ -164,11 +164,12 @@ services:
     image: ghcr.io/runcitadel/middleware:main@sha256:fdb8b40a651cb4563c754c3f29d1826d32460100c9846d185e8609f0b357eec6
     depends_on:
     - bitcoin
-    - lightning
-    command: sh -c "./wait-for-manager.sh $MANAGER_IP && ././start.sh"
+    - c-lightning
+    command: sh -c "./wait-for-manager.sh $MANAGER_IP && ./start.sh"
     restart: on-failure
     volumes:
     - ${PWD}/lnd:/lnd
+    - ${PWD}/c-lightning:/c-lightning
     - jwt-public-key:/jwt-public-key
     environment:
       PORT: '3005'
@@ -181,6 +182,7 @@ services:
       JWT_PUBLIC_KEY_FILE: /jwt-public-key/jwt.pem
       DEVICE_HOSTS: ${DEVICE_HOSTS:-"http://citadel.local"}
       UNSAFE_REMOVE_CORS_CHECK: true
+      LIGHTNING_IMPL: c-lightning
     networks:
       default:
         ipv4_address: $MIDDLEWARE_IP
@@ -217,6 +219,21 @@ services:
     networks:
       default:
         ipv4_address: $I2P_IP
+  c-lightning:
+    container_name: c-lightning
+    image: ghcr.io/runcitadel/core-ln:main@sha256:e4ac6be508b2cb0c123bc1bb11831a22bec26073f29a5ed686f542b36812d4e0
+    environment:
+      LIGHTNINGD_NETWORK: bitcoin
+      CL_REST_STATE_DIR: /data/.lightning
+    restart: on-failure
+    volumes:
+    - ${PWD}/c-lightning:/data/.lightning
+    - ${PWD}/bitcoin:/data/.bitcoin
+    ports:
+    - $SPARKO_RPC_PORT:$SPARKO_RPC_PORT
+    networks:
+      default:
+        ipv4_address: $C_LIGHTNING_IP
 
 networks:
   default:

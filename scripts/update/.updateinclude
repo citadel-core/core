@@ -5,6 +5,7 @@ tor/torrc-apps-2
 tor/torrc-apps-3
 tor/torrc-core
 apps/docker-compose.common.yml
+c-lightning/.gitkeep
 services/bitcoin/*
 services/lightning/*
 db/dependencies.yml
