@@ -327,7 +327,7 @@ except:
 
 # Get APP_<IMPLEMENTATION>_MIDDLEWARE_IP from the .env file
 dotenv=parse_dotenv('./.env')
-MIDDLEWARE_IP = dotenv["APP_{}_MIDDLEWARE_IP".format(implementation.upper())]
+MIDDLEWARE_IP = dotenv["APP_{}_MIDDLEWARE_IP".format(implementation.upper().replace("-", "_"))]
 
 if not os.path.isfile("./nginx/nginx.conf"):
   print("Generating nginx configuration...\n")
