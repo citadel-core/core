@@ -126,10 +126,14 @@ def compose(app, arguments):
     # List all hidden services for an app and put their hostname in the environment
     hiddenServices: List[str] = getAppRegistryEntry(app).get("hiddenServices", [])
     for service in hiddenServices:
-        appHiddenServiceFile = os.path.join(
-            nodeRoot, "tor", "data", "app-{}-{}/hostname".format(app, service))
-        os.environ["APP_HIDDEN_SERVICE_{}".format(service.upper().replace("-", "_"))] = subprocess.check_output("cat {} 2>/dev/null || echo 'notyetset.onion'".format(
-            appHiddenServiceFile), shell=True).decode("utf-8").strip()
+        appHiddenServiceFile = os.path.join(nodeRoot, "tor", "data", service, "hostname")
+        service_id = service.remove_prefix("app-{}-".format(app))
+        try:
+            with open(appHiddenServiceFile, "r") as file: 
+                os.environ["APP_HIDDEN_SERVICE_{}".format(service_id.upper().replace("-", "_"))] = file.read()
+        except Exception:
+            os.environ["APP_HIDDEN_SERVICE_{}".format(service_id.upper().replace("-", "_"))] = "notyetset.onion"
+          
 
     if not os.path.isfile(composeFile):
         print("Error: Could not find docker-compose.yml in " + app)
