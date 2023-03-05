@@ -55,7 +55,7 @@ services:
     - host.docker.internal:host-gateway
   caddy:
     container_name: caddy
-    image: ghcr.io/runcitadel/caddy:main@sha256:a64ed99ad821ab53119c5e314aab47b37406c5d6caf1ec0bcd65c8da981823d8
+    image: runcitadel/caddy:main@sha256:4abef003c4a3221da44cf84fba2ee094b8d52ce15c1211f48ceefcaa38dd4109
     volumes:
     - ${PWD}/caddy/data:/data
     - ${PWD}/caddy/Caddyfile:/etc/caddy/Caddyfile
