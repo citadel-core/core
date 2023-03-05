@@ -130,7 +130,7 @@ def compose(app, arguments):
         service_id = service.removeprefix("app-{}-".format(app))
         try:
             with open(appHiddenServiceFile, "r") as file: 
-                os.environ["APP_HIDDEN_SERVICE_{}".format(service_id.upper().replace("-", "_"))] = file.read()
+                os.environ["APP_HIDDEN_SERVICE_{}".format(service_id.upper().replace("-", "_"))] = file.read().strip()
         except Exception:
             os.environ["APP_HIDDEN_SERVICE_{}".format(service_id.upper().replace("-", "_"))] = "notyetset.onion"
           
